@@ -2,7 +2,6 @@
 const express = require("express");
 const Tabla_posiciones = require("./routes/Tabla_posiciones")
 const {Tabla_posiciones_saveToBd} = require("./controller/posicionesController")
-const hbs = require("express-handlebars")
 
 //DataBase
 const mongoose = require("mongoose");
