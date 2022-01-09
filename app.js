@@ -22,7 +22,7 @@ mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
 
 //App 
 const app = express()
-const port = process.env.port||3000
+const port = process.env.PORT || 80
 
 app.set('view engine', 'hbs');
 app.set("views", __dirname + "/views");
