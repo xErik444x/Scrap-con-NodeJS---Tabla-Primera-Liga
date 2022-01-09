@@ -10,7 +10,7 @@ module.exports.Tabla_posiciones_saveToBd = async ()=>{
             console.warn("Error, no data in table. - posicionesController")
             return("Error, no data in table. - posicionesController")
         }
-        console.log("actualizando datos en bd")
+        //console.log("actualizando datos en bd")
         //clear database and upload new data
         tabla_posiciones.deleteMany({}).then(res =>{
             tabla_posiciones.insertMany(table)
