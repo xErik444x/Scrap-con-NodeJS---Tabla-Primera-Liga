@@ -1,3 +1,5 @@
+realtime: https://liga-profesional.herokuapp.com/posiciones
+
 # Controller
 
 > donde se maneja la base de datos de la tabla de posiciones
