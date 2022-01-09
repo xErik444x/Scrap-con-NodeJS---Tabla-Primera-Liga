@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta name="title" content="Liga profesional tabla de posiciones futbol argentina">
+    <meta name="description" content="ver tabla de posiciones del futbol argentino temporada Liga profesional primera division  ">
+    <meta name="keywords" content="futbol,argentina,tabla,posiciones,river,boca,liga">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots"  content="all" />
+    <meta name="language" content="Spanish">
+    <link rel="stylesheet" href="css/posiciones.css">
+    <title>{{title}}</title>
+</head>
+<body>
+    <h1>{{title}}</h1>
+    <div class="container">
+        {{#if arrayPosiciones}}
+            <table id="tabla_posiciones">
+            <thead>
+                <tr>
+                    <th>POS</th>
+                    <th class="desk" >ESCUDO</th>
+                    <th>EQUIPO</th>
+                    <th>PJ</th>
+                    <th>G</th>
+                    <th>E</th>
+                    <th>P</th>
+                    <th class="desk">GF</th>
+                    <th class="desk">GC</th>
+                    <th class="desk">DG</th>
+                    <th>PTS</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{#each arrayPosiciones}}
+                <tr>
+                    <td>{{pos}}</td>
+                    <td  class="desk" ><img src="{{team_img}}" alt="{{team_name_short}}_logo" width="32" height="32"> </td>
+                    <td class="desk">{{team_name_large}}</td>
+                    <td class="mobil">{{team_name_short}}</td>
+                    <td>{{pj}}</td>
+                    <td>{{g}}</td>
+                    <td>{{e}}</td>
+                    <td>{{p}}</td>
+                    <td class="desk">{{gf}}</td>
+                    <td class="desk">{{gc}}</td>
+                    <td class="desk">{{dg}}</td>
+                    <td class="td_pts">{{pts}}</td>
+                </tr>
+                {{/each}}
+
+            </tbody>
+        </table>
+
+        {{else}}
+            <p>Cargando datos... actualice la pagina</p>
+        {{/if}}
+       
+    </div>
+
+</body>
+
+</html>
