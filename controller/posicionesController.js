@@ -21,7 +21,7 @@ module.exports.Tabla_posiciones_saveToBd = async ()=>{
             //compare scrap data and database data
             //if scraping is different from database, update them
             table.forEach((e,i) => {
-                if(e.team_name_large != data[i].team_name_large){
+                if(e.team_name_large != data[i].team_name_large || e.pts != data[i].pts){
                     tabla_posiciones.findByIdAndUpdate(data[i].id,e, function(err){
                         if(err){
                             console.warn(err)
