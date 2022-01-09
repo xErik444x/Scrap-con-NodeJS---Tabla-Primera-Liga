@@ -6,7 +6,7 @@ realtime: https://liga-profesional.herokuapp.com/posiciones
 
 # Models
 
-> el modelo de la tabla de posiciones
+> Modelo de Mongoose de la tabla de posiciones
 
 # public
 
@@ -14,8 +14,8 @@ realtime: https://liga-profesional.herokuapp.com/posiciones
 
 # routes
 
-> rutas de express /posiciones
+> rutas de express, ej: /posiciones
 
 # view
 
-> donde se genera la vista de las rutas.
+> donde se genera la vista de las rutas utilizando handlebars.
