@@ -10,7 +10,7 @@ const timeUpdateScrap = process.env.timeUpdateScrap;
 
 mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
 .then(()=> {
-  console.log('conection success to db')
+  console.log('connection success to db')
   Tabla_posiciones_saveToBd()
   setTimeout(() => {
     Tabla_posiciones_saveToBd()
