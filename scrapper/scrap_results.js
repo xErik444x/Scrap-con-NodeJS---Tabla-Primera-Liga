@@ -3,19 +3,28 @@ const cheerio = require("cheerio")
 const axios = require("axios")
 
 //const
-const url = "https://www.futbolargentino.com/primera-division/posiciones"
+const url = "https://www.futbolargentino.com/copa-libertadores/tabla-de-posiciones"
 
 //main scrap
-module.exports.scrapResults = async function scrapResults() {
+//export as default this function
+module.exports.scrapResults = async (url,leagueName) =>{
+    if(!url){ throw new Error("No url defined")}
+    if(!leagueName){ throw new Error("No leagueName defined")}
+
     try {
         const { data } = await axios.get(url);
         const $ = cheerio.load(data)
 
-        let results = []
-        const table_results = $("table tbody tr");
+        
+        const table_results = $(".fase.card table tbody tr");
+        let results = {
+                league:leagueName,
+                data:[]
+            }
+        //print parent of table_results
         
         table_results.each((i, el) => {
-            results.push({
+            results.data.push({
                 pos: $(el).find("td").eq(0).text().trim(),
                 team_img: $(el).find("img").attr("data-src"),
                 team_name_large: $(el).find("td").eq(1).find("span").eq(0).text().trim(),
@@ -28,10 +37,13 @@ module.exports.scrapResults = async function scrapResults() {
                 gc:$(el).find("td").eq(7).text().trim(),
                 dg: $(el).find("td").eq(8).text().trim(),
                 pts: $(el).find("td").eq(9).text().trim(),
+                group: $(el).parent().parent().parent().parent().parent().find("span").eq(0).text().trim()
             })
         })
+        //console.log(results)
         return(results)
     } catch (error) {
+        console.log(error)
         return(["Error",error])
     }
 

@@ -31,3 +31,4 @@ realtime: https://liga-profesional.herokuapp.com/posiciones
 > SEO: canonica, autor, kewords poner todos los equipos, Acomodar h1 y h2 (verde)
 > Puerto de heroku (ver que paso)
 
+> en caso de que sea Argentina Primera División, marcar con colores, sino no.
