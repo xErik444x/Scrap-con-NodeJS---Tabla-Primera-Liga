@@ -20,7 +20,23 @@
     <title>{{title}}</title>
 </head>
 <body>
+    <div class="header">
+  <a href="#default" class="logo">Tabla de posiciones</a>
+  <div class="header-right">
+      {{#if leagues}}
+        {{#each leagues }}
+            {{#if (eq ../id this.id)}}
+                <a class="active" href="?id={{ this.id }}">{{this.league}}</a>
+            {{else}}
+                 <a href="?id={{ this.id }}">{{this.league}}</a>
+            {{/if}}
+        
+        {{/each}}
+    {{/if}}
+  </div>
+</div>
     <h1>{{title}}</h1>
+    
     <div class="container">
         {{#if data}}
             <table id="tabla_posiciones">
@@ -41,7 +57,15 @@
             </thead>
             <tbody>
                 {{#each data}}
-                {{#if (IsAscent this.pos)}}
+                    {{#if (equalGroup this.group ../data @index) }}
+                    <tr>
+                        <th>{{this.group}}</th>
+                        
+                    </tr>
+                
+                    {{/if}}
+                
+                {{#if (IsAscent this.pos ../title)}}
                     <tr class="Ascent">
                         <td>{{this.pos}}</td>
                         <td class="desk" ><img src="{{this.team_img}}" alt="{{this.team_name_short}}_logo" width="32" height="32"> </td>
@@ -57,7 +81,7 @@
                         <td class="td_pts">{{this.pts}}</td>
                     </tr>
                 {{else}}
-                    {{#if (IsDescent this.pos size)}}
+                    {{#if (IsDescent this.pos ../size ../title)}}
                         <tr class="Descent">
                             <td>{{this.pos}}</td>
                             <td class="desk" ><img src="{{this.team_img}}" alt="{{this.team_name_short}}_logo" width="32" height="32"> </td>
@@ -93,23 +117,7 @@
             
                 {{/if}}
                 
-                {{!-- <tr>
-                    <th>GRUPO X</th>
-                    
-                </tr>
-                <tr>
-                    <th>POS</th>
-                    <th class="desk" >ESCUDO</th>
-                    <th>EQUIPO</th>
-                    <th>PJ</th>
-                    <th>G</th>
-                    <th>E</th>
-                    <th>P</th>
-                    <th class="desk">GF</th>
-                    <th class="desk">GC</th>
-                    <th class="desk">DG</th>
-                    <th>PTS</th>
-                </tr> --}}
+                
                 {{/each}}
 
             </tbody>

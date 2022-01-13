@@ -56,9 +56,13 @@ const leagues = [
 ]
 
 //function to scrap and save data to database
-function saveScrapToBD(){
+async function saveScrapToBD(){
   leagues.map((league,i)=>{
     scrapResults(league.url,league.name).then((results)=>{
+      if(results === 404){
+        console.warn("no results for league: "+league.name+" url: "+league.url)
+        return;
+      }
       modelo_tabla_posiciones.findOneAndUpdate({league:league.name}, results, {upsert: true}, function(err, doc) {
         if (err) console.log(500, {error: err});
         //console.log('Succesfully saved.');
@@ -70,7 +74,7 @@ function saveScrapToBD(){
 mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
 .then(async ()=> {
   console.log('connection success to db')
-  saveScrapToBD() //scrap and save data to database
+  await saveScrapToBD() //scrap and save data to database
   setInterval(() => {
     saveScrapToBD() 
   }, timeUpdateScrap >20000 || 20000);
@@ -98,13 +102,25 @@ app.engine('hbs', handlebars.engine({
     allowProtoMethodsByDefault: true,
   },
   helpers: {
-    IsAscent: function (pos) {
-      return pos<=4;
+    eq: (v1, v2) => v1 === v2,
+    IsAscent: function (pos,title) {
+      
+      return pos<=4 && title === "Argentina Primera División";
     },
-    IsDescent: function (pos, size ) {
-      console.log(size)
-      console.log(pos)
-      return pos>=size-4 && pos<=size;
+    IsDescent: function (pos, size,title ) {
+      return pos>=size-4 && pos<=size && title === "Argentina Primera División";
+    },
+    equalGroup: function (group,data,index ) {
+      if(group==="Regular"){
+        return false;
+      }
+      if(index<=1){
+        return false
+      }
+      //../data.[4]
+      //console.log(data[index-1].group);
+      // console.log(data[index-1].group)
+      return (group!==data[index-1].group);
     }
   },
   }));
@@ -119,41 +135,45 @@ app.get('/posiciones', async (req, res) => {
     //?id
     const id = req.query.id;
     if(id != null){
-        const arrayPosiciones = await modelo_tabla_posiciones.findById(id);
-          if(arrayPosiciones<1){
-            //if error, render default ligue ("Argentina Primera División")
-            arrayPosiciones = await modelo_tabla_posiciones.find({league:"Argentina Primera División"});
-            res.render("Posiciones",{
-                title: arrayPosiciones[0].league,
-                size: arrayPosiciones[0].size,
-                data: arrayPosiciones[0].data
-            })
+        modelo_tabla_posiciones.findById(id, async (err, arrayPosiciones )=>{
+          if (err || !arrayPosiciones){
+           // console.log(500, {error: err});
+            res.send("Error id not found");
             return;
-          }else{
-            res.render("Posiciones",{
-              title: arrayPosiciones.league,
-              size: arrayPosiciones.size,
-              data: arrayPosiciones.data
-          })
-          }
-
-         
+          } 
+          const leagues = await modelo_tabla_posiciones.find({}).select('league');
+          res.render("Posiciones",{
+            title: arrayPosiciones.league,
+            size: arrayPosiciones.size,
+            id: arrayPosiciones.id,
+            data: arrayPosiciones.data,
+            leagues: leagues,
+        })
         
+        }) 
+          
     }else{
-      //if error, render default ligue ("Argentina Primera División")
-      arrayPosiciones = await modelo_tabla_posiciones.find({league:"Argentina Primera División"});
-      console.log(arrayPosiciones)
-      res.render("Posiciones",{
-          title: arrayPosiciones[0].league,
-          size: arrayPosiciones[0].size,
-          data: arrayPosiciones[0].data
-      })
-      return;
+      //get default data
+      modelo_tabla_posiciones.find({league:"Argentina Primera División"}).then(async (arrayPosiciones,err )=>{
+        if (err || !arrayPosiciones){
+          console.log(500, {error: err});
+          return;
+        } 
+        const leagues = await modelo_tabla_posiciones.find({}).select('league');
+          res.render("Posiciones",{
+            title: arrayPosiciones[0].league,
+            size: arrayPosiciones[0].size,
+            id: arrayPosiciones[0].id,
+            data: arrayPosiciones[0].data,
+            leagues: leagues,
+        })
+      
+      }); 
     
     }
     
   } catch (error) {
-      console.log("Error in line 25 " + error)
+      console.warn(error)
   }
 })
 
