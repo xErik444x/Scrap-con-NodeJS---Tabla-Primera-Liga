@@ -2,11 +2,7 @@
 const cheerio = require("cheerio")
 const axios = require("axios")
 
-//const
-const url = "https://www.futbolargentino.com/copa-libertadores/tabla-de-posiciones"
-
 //main scrap
-//export as default this function
 module.exports.scrapResults = async (url,leagueName) =>{
     if(!url){ throw new Error("No url defined")}
     if(!leagueName){ throw new Error("No leagueName defined")}
@@ -19,6 +15,7 @@ module.exports.scrapResults = async (url,leagueName) =>{
         const table_results = $(".fase.card table tbody tr");
         let results = {
                 league:leagueName,
+                size:0,
                 data:[]
             }
         //print parent of table_results
@@ -41,6 +38,7 @@ module.exports.scrapResults = async (url,leagueName) =>{
             })
         })
         //console.log(results)
+        results.size = results.data.length;
         return(results)
     } catch (error) {
         console.log(error)

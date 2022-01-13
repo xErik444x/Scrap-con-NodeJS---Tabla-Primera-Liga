@@ -1,12 +1,14 @@
 //Imports
 const express = require("express");
 const mongoose = require("mongoose");
+const handlebars = require('express-handlebars');
+
 
 //DataBase MODEL
-
 const { Schema } = mongoose
 const Tabla_posicionesSchema = new Schema({
   league: String,
+  size:Number,
   data: [{
     pos:  Number,
     team_img: String,
@@ -32,9 +34,9 @@ const url = process.env.mongoDbUrl;
 const timeUpdateScrap = process.env.MillisecondstimeUpdateScrap;
 const {scrapResults} = require("./scrapper/scrap_results");
 //check if url is defined
-if(typeof(url) === undefined){ throw new Error("No ENV mongoDbUrl defined");}
+if(!url){ throw new Error("No ENV mongoDbUrl defined");}
 
-if((typeof(timeUpdateScrap) === undefined) || timeUpdateScrap<2000){ throw("MillisecondstimeUpdateScrap is not defined or is less than 2000 milliseconds");}
+if(!timeUpdateScrap || timeUpdateScrap<2000){ throw("MillisecondstimeUpdateScrap is not defined or is less than 2000 milliseconds");}
 
 //leagues in pages to scrap
 const leagues = [
@@ -74,7 +76,7 @@ mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
   }, timeUpdateScrap >20000 || 20000);
 
 }) 
-.catch(e => console.log('error connection db', e))
+.catch(e => console.log(url+' error connection db \n', e))
 
 
 
@@ -86,18 +88,70 @@ if(!port){ throw new Error("No PORT ENV VARIABLE defined");}
 
 app.set('view engine', 'hbs');
 
+
+//Sets handlebars configurations (we will go through them later on)
+app.engine('hbs', handlebars.engine({
+  extname: 'hbs',
+  defaultLayout: null,
+  runtimeOptions: {
+    allowProtoPropertiesByDefault: true,
+    allowProtoMethodsByDefault: true,
+  },
+  helpers: {
+    IsAscent: function (pos) {
+      return pos<=4;
+    },
+    IsDescent: function (pos, size ) {
+      console.log(size)
+      console.log(pos)
+      return pos>=size-4 && pos<=size;
+    }
+  },
+  }));
+
 app.set("views", __dirname + "/views");
 
 app.use(express.static('public'))
 
-app.get('/argentina', async (req, res) => {
+app.get('/posiciones', async (req, res) => {
   try {
-    arrayPosiciones = await modelo_tabla_posiciones.find({league:"Copa Libertadores"}).sort({'pos': 1});
-    console.log(arrayPosiciones[0].data)  
-    res.render("Posiciones",{
+
+    //?id
+    const id = req.query.id;
+    if(id != null){
+        const arrayPosiciones = await modelo_tabla_posiciones.findById(id);
+          if(arrayPosiciones<1){
+            //if error, render default ligue ("Argentina Primera División")
+            arrayPosiciones = await modelo_tabla_posiciones.find({league:"Argentina Primera División"});
+            res.render("Posiciones",{
+                title: arrayPosiciones[0].league,
+                size: arrayPosiciones[0].size,
+                data: arrayPosiciones[0].data
+            })
+            return;
+          }else{
+            res.render("Posiciones",{
+              title: arrayPosiciones.league,
+              size: arrayPosiciones.size,
+              data: arrayPosiciones.data
+          })
+          }
+
+         
+        
+    }else{
+      //if error, render default ligue ("Argentina Primera División")
+      arrayPosiciones = await modelo_tabla_posiciones.find({league:"Argentina Primera División"});
+      console.log(arrayPosiciones)
+      res.render("Posiciones",{
           title: arrayPosiciones[0].league,
+          size: arrayPosiciones[0].size,
           data: arrayPosiciones[0].data
       })
+      return;
+    
+    }
+    
   } catch (error) {
       console.log("Error in line 25 " + error)
   }
@@ -106,4 +160,13 @@ app.get('/argentina', async (req, res) => {
 app.listen(port, () => {
   console.log(`app listening!`)
 })
+
+
+//handlebars helpers
+
+
+//el ascenso y descenso solo funciona si la liga es "Argentina Primera División"
+// Handlebars.registerHelper('isPrimeraDivision', function (name ) {
+//   return name == "Argentina Primera División";
+// });
 

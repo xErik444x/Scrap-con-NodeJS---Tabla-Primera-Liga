@@ -6,7 +6,7 @@
     {{#if data}}
         <meta name="keywords" content="futbol,argentina,tabla,posiciones,river,boca,liga
         {{#each data}}
-            {{team_name_short}},
+            {{this.team_name_short}},
         {{/each}}
         
         ">
@@ -41,20 +41,75 @@
             </thead>
             <tbody>
                 {{#each data}}
+                {{#if (IsAscent this.pos)}}
+                    <tr class="Ascent">
+                        <td>{{this.pos}}</td>
+                        <td class="desk" ><img src="{{this.team_img}}" alt="{{this.team_name_short}}_logo" width="32" height="32"> </td>
+                        <td class="desk">{{this.team_name_large}}</td>
+                        <td class="mobil">{{this.team_name_short}}</td>
+                        <td>{{this.pj}}</td>
+                        <td>{{this.g}}</td>
+                        <td>{{this.e}}</td>
+                        <td>{{this.p}}</td>
+                        <td class="desk">{{this.gf}}</td>
+                        <td class="desk">{{this.gc}}</td>
+                        <td class="desk">{{this.dg}}</td>
+                        <td class="td_pts">{{this.pts}}</td>
+                    </tr>
+                {{else}}
+                    {{#if (IsDescent this.pos size)}}
+                        <tr class="Descent">
+                            <td>{{this.pos}}</td>
+                            <td class="desk" ><img src="{{this.team_img}}" alt="{{this.team_name_short}}_logo" width="32" height="32"> </td>
+                            <td class="desk">{{this.team_name_large}}</td>
+                            <td class="mobil">{{this.team_name_short}}</td>
+                            <td>{{this.pj}}</td>
+                            <td>{{this.g}}</td>
+                            <td>{{this.e}}</td>
+                            <td>{{this.p}}</td>
+                            <td class="desk">{{this.gf}}</td>
+                            <td class="desk">{{this.gc}}</td>
+                            <td class="desk">{{this.dg}}</td>
+                            <td class="td_pts">{{this.pts}}</td>
+                        </tr>
+                    
+                    {{else}}
                 <tr>
                     <td>{{this.pos}}</td>
-                    <td class="desk" ><img src="{{team_img}}" alt="{{team_name_short}}_logo" width="32" height="32"> </td>
-                    <td class="desk">{{team_name_large}}</td>
-                    <td class="mobil">{{team_name_short}}</td>
-                    <td>{{pj}}</td>
-                    <td>{{g}}</td>
-                    <td>{{e}}</td>
-                    <td>{{p}}</td>
-                    <td class="desk">{{gf}}</td>
-                    <td class="desk">{{gc}}</td>
-                    <td class="desk">{{dg}}</td>
-                    <td class="td_pts">{{pts}}</td>
+                        <td class="desk" ><img src="{{this.team_img}}" alt="{{this.team_name_short}}_logo" width="32" height="32"> </td>
+                        <td class="desk">{{this.team_name_large}}</td>
+                        <td class="mobil">{{this.team_name_short}}</td>
+                        <td>{{this.pj}}</td>
+                        <td>{{this.g}}</td>
+                        <td>{{this.e}}</td>
+                        <td>{{this.p}}</td>
+                        <td class="desk">{{this.gf}}</td>
+                        <td class="desk">{{this.gc}}</td>
+                        <td class="desk">{{this.dg}}</td>
+                        <td class="td_pts">{{this.pts}}</td>
                 </tr>
+                    {{/if}}
+                
+            
+                {{/if}}
+                
+                {{!-- <tr>
+                    <th>GRUPO X</th>
+                    
+                </tr>
+                <tr>
+                    <th>POS</th>
+                    <th class="desk" >ESCUDO</th>
+                    <th>EQUIPO</th>
+                    <th>PJ</th>
+                    <th>G</th>
+                    <th>E</th>
+                    <th>P</th>
+                    <th class="desk">GF</th>
+                    <th class="desk">GC</th>
+                    <th class="desk">DG</th>
+                    <th>PTS</th>
+                </tr> --}}
                 {{/each}}
 
             </tbody>
