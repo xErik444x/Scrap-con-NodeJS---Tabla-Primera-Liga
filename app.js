@@ -2,7 +2,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const handlebars = require('express-handlebars');
-
+const {scrapResults} = require("./scrapper/scrap_results");
 
 //DataBase MODEL
 const { Schema } = mongoose
@@ -26,19 +26,18 @@ const Tabla_posicionesSchema = new Schema({
   }],
 
 });
-  
 const modelo_tabla_posiciones = mongoose.model("Tabla_posicionesV2",Tabla_posicionesSchema)
 
 
 const url = process.env.mongoDbUrl;
 const timeUpdateScrap = process.env.MillisecondstimeUpdateScrap;
-const {scrapResults} = require("./scrapper/scrap_results");
+
 //check if url is defined
 if(!url){ throw new Error("No ENV mongoDbUrl defined");}
-
+//check if MillisecondstimeUpdateScrap is defined
 if(!timeUpdateScrap || timeUpdateScrap<2000){ throw("MillisecondstimeUpdateScrap is not defined or is less than 2000 milliseconds");}
 
-//leagues in pages to scrap
+//leagues to scrap
 const leagues = [
   {
     name:"Copa Libertadores",
@@ -56,7 +55,7 @@ const leagues = [
 ]
 
 //function to scrap and save data to database
-async function saveScrapToBD(){
+function saveScrapToBD(){
   leagues.map((league,i)=>{
     scrapResults(league.url,league.name).then((results)=>{
       if(results === 404){
@@ -74,7 +73,7 @@ async function saveScrapToBD(){
 mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
 .then(async ()=> {
   console.log('connection success to db')
-  await saveScrapToBD() //scrap and save data to database
+  saveScrapToBD() //scrap and save data to database
   setInterval(() => {
     saveScrapToBD() 
   }, timeUpdateScrap >20000 || 20000);
@@ -93,7 +92,7 @@ if(!port){ throw new Error("No PORT ENV VARIABLE defined");}
 app.set('view engine', 'hbs');
 
 
-//Sets handlebars configurations (we will go through them later on)
+//Sets handlebars configurations
 app.engine('hbs', handlebars.engine({
   extname: 'hbs',
   defaultLayout: null,
@@ -104,22 +103,19 @@ app.engine('hbs', handlebars.engine({
   helpers: {
     eq: (v1, v2) => v1 === v2,
     IsAscent: function (pos,title) {
-      
       return pos<=4 && title === "Argentina Primera División";
     },
     IsDescent: function (pos, size,title ) {
       return pos>=size-4 && pos<=size && title === "Argentina Primera División";
     },
     equalGroup: function (group,data,index ) {
+      //regular is default
       if(group==="Regular"){
         return false;
       }
       if(index<=1){
         return false
       }
-      //../data.[4]
-      //console.log(data[index-1].group);
-      // console.log(data[index-1].group)
       return (group!==data[index-1].group);
     }
   },
@@ -131,13 +127,11 @@ app.use(express.static('public'))
 
 app.get('/posiciones', async (req, res) => {
   try {
-
     //?id
     const id = req.query.id;
     if(id != null){
         modelo_tabla_posiciones.findById(id, async (err, arrayPosiciones )=>{
           if (err || !arrayPosiciones){
-           // console.log(500, {error: err});
             res.send("Error id not found");
             return;
           } 
@@ -180,13 +174,4 @@ app.get('/posiciones', async (req, res) => {
 app.listen(port, () => {
   console.log(`app listening!`)
 })
-
-
-//handlebars helpers
-
-
-//el ascenso y descenso solo funciona si la liga es "Argentina Primera División"
-// Handlebars.registerHelper('isPrimeraDivision', function (name ) {
-//   return name == "Argentina Primera División";
-// });
 
