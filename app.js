@@ -106,7 +106,7 @@ app.engine('hbs', handlebars.engine({
       return pos<=4 && title === "Argentina Primera División";
     },
     IsDescent: function (pos, size,title ) {
-      return pos>=size-4 && pos<=size && title === "Argentina Primera División";
+      return pos>size-4 && pos<=size && title === "Argentina Primera División";
     },
     equalGroup: function (group,data,index ) {
       //regular is default
@@ -174,4 +174,5 @@ app.get('/posiciones', async (req, res) => {
 app.listen(port, () => {
   console.log(`app listening!`)
 })
+
 

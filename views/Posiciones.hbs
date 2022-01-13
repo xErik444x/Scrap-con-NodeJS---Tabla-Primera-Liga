@@ -16,12 +16,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots"  content="all" />
     <meta name="language" content="Spanish">
+    <link rel="canonical" href="https://liga-profesional.herokuapp.com/posiciones"/>
+    <meta name="author" content="Erik Lionel Schwerdt" />
+    <meta name="publisher" content="http://erikschwerdt.ml">
+
     <link rel="stylesheet" href="css/posiciones.css">
     <title>{{title}}</title>
 </head>
 <body>
     <div class="header">
-  <a href="#default" class="logo">Tabla de posiciones</a>
+  <h1 class="logo">Tabla de posiciones</h1>
   <div class="header-right">
       {{#if leagues}}
         {{#each leagues }}
@@ -35,7 +39,7 @@
     {{/if}}
   </div>
 </div>
-    <h1>{{title}}</h1>
+    <h2>{{title}}</h2>
     
     <div class="container">
         {{#if data}}
@@ -127,7 +131,21 @@
         {{/if}}
        
     </div>
-
+    <div class="info">
+        <ul>
+            <li>J:Número de partidos jugados | </li>
+            <li>G:El número de partidos ganados. | </li>
+            <li>E:Empate | </li>
+            <li>P:Derrotas | </li>
+            <li>GF:Goles a favor | </li>
+            <li>GC:Goles en contra | </li>
+            <li>DIF:Diferencia de puntos | </li>
+            <li>PTS:Puntos</li>
+        </ul>
+    </div>
+    <footer>
+        <p>&copy; 2022 - <a href="erikschwerdt.ml"style="Color:white">Erik Lionel Schwerdt</a></p>
+    </footer>
 </body>
 
 </html>

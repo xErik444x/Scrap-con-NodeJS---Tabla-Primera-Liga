@@ -22,7 +22,10 @@ html {
     border-radius: 0px;
   }
   
-  .header a.logo {
+  .logo {
+      font-size: 20px;
+    color:white;
+    display:contents;
     font-size: 25px;
     font-weight: bold;
   }
@@ -42,7 +45,6 @@ html {
     float: right;
   }
   
-
 /* END HEADER */
 
 
@@ -53,7 +55,7 @@ html {
     justify-content: center;
 }
 
-h1,
+h2,
 p {
     text-align: center;
 }
@@ -76,16 +78,6 @@ td {
     font-size: 18px;
 
 }
-/*  OLD  Ascent
-tbody tr:nth-child(-n+4) {
-    background-color: #278a6c;
-    color: white
-}
-
-tbody tr:nth-last-child(-n+4) {
-    background-color: rgb(175, 49, 49);
-    color: white
-} */
 
 .Ascent{
     background-color: #278a6c;
@@ -99,6 +91,22 @@ tbody tr:nth-last-child(-n+4) {
 
 .mobil {
     display: none;
+}
+
+.info {
+    width: 70%;
+    height: 100%;
+    display: flex;
+    margin:auto;
+    justify-content: center;
+}
+.info ul{
+    text-align:center;
+}
+
+.info li{
+    font-size: 16px;
+    display: inline;
 }
 
 
