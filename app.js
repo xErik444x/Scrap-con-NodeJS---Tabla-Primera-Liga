@@ -64,7 +64,7 @@ function saveScrapToBD(){
       }
       modelo_tabla_posiciones.findOneAndUpdate({league:league.name}, results, {upsert: true}, function(err, doc) {
         if (err) console.log(500, {error: err});
-        //console.log('Succesfully saved.');
+        console.log('Succesfully saved.');
         });
     })
   });
@@ -130,12 +130,14 @@ app.get('/posiciones', async (req, res) => {
     //?id
     const id = req.query.id;
     if(id != null){
+        console.log("hay id:" + id)
         modelo_tabla_posiciones.findById(id, async (err, arrayPosiciones )=>{
           if (err || !arrayPosiciones){
             res.send("Error id not found");
             return;
           } 
           const leagues = await modelo_tabla_posiciones.find({}).select('league');
+          console.log("enviando respuesta!")
           res.render("Posiciones",{
             title: arrayPosiciones.league,
             size: arrayPosiciones.size,
