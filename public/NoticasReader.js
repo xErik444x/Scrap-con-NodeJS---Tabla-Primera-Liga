@@ -1,6 +1,6 @@
 const btn = document.getElementById("leerNota");
   btn.addEventListener('click', () => {
-    alert("Click en boton leer nota");
+    console.log("Click en boton leer nota");
     speakArticle() ;
   });
 
