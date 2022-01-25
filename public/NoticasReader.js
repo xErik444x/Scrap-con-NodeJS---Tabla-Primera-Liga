@@ -1,3 +1,8 @@
+const btn = document.getElementById("leerNota");
+  btn.addEventListener('click', () => {
+    speakArticle() ;
+  });
+
 function speak(text, language) {
     var s = new SpeechSynthesisUtterance(text);
     s.lang = language;	speechSynthesis.speak(s);
