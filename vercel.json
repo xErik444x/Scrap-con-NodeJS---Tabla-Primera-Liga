@@ -1,3 +1,15 @@
 {
-  "rewrites": [{ "source": "/posiciones", "destination": "/posiciones" }]
+   "version": 2,
+   "builds": [
+    {
+        "src": "./app.js",
+        "use": "@vercel/node"
+    }
+   ],
+   "routes": [
+    {
+        "src": "/posiciones",
+        "dest": "/posiciones"
+    }
+   ]
 }
