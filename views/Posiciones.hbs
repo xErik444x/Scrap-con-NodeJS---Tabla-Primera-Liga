@@ -3,18 +3,46 @@
 <head>
     <meta name="title" content="Liga profesional tabla de posiciones futbol argentina">
     <meta name="description" content="ver tabla de posiciones del futbol argentino temporada Liga profesional primera division  ">
-    <meta name="keywords" content="futbol,argentina,tabla,posiciones,river,boca,liga">
+    {{#if data}}
+        <meta name="keywords" content="futbol,argentina,tabla,posiciones,river,boca,liga
+        {{#each data}}
+            {{this.team_name_short}},
+        {{/each}}
+        
+        ">
+    {{/if}}
+    
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="robots"  content="all" />
     <meta name="language" content="Spanish">
+    <link rel="canonical" href="https://liga-profesional.herokuapp.com/posiciones"/>
+    <meta name="author" content="Erik Lionel Schwerdt" />
+    <meta name="publisher" content="http://erikschwerdt.ml">
+
     <link rel="stylesheet" href="css/posiciones.css">
     <title>{{title}}</title>
 </head>
 <body>
-    <h1>{{title}}</h1>
+    <div class="header">
+  <h1 class="logo">Tabla de posiciones</h1>
+  <div class="header-right">
+      {{#if leagues}}
+        {{#each leagues }}
+            {{#if (eq ../id this.id)}}
+                <a class="active" href="?id={{ this.id }}">{{this.league}}</a>
+            {{else}}
+                 <a href="?id={{ this.id }}">{{this.league}}</a>
+            {{/if}}
+        
+        {{/each}}
+    {{/if}}
+  </div>
+</div>
+    <h2>{{title}}</h2>
+    
     <div class="container">
-        {{#if arrayPosiciones}}
+        {{#if data}}
             <table id="tabla_posiciones">
             <thead>
                 <tr>
@@ -32,21 +60,67 @@
                 </tr>
             </thead>
             <tbody>
-                {{#each arrayPosiciones}}
+                {{#each data}}
+                    {{#if (equalGroup this.group ../data @index) }}
+                    <tr>
+                        <th>{{this.group}}</th>
+                    </tr>
+                
+                    {{/if}}
+                
+                {{#if (IsAscent this.pos ../title)}}
+                    <tr class="Ascent">
+                        <td>{{this.pos}}</td>
+                        <td class="desk" ><img src="{{this.team_img}}" alt="{{this.team_name_short}}_logo" width="32" height="32"> </td>
+                        <td class="desk">{{this.team_name_large}}</td>
+                        <td class="mobil">{{this.team_name_short}}</td>
+                        <td>{{this.pj}}</td>
+                        <td>{{this.g}}</td>
+                        <td>{{this.e}}</td>
+                        <td>{{this.p}}</td>
+                        <td class="desk">{{this.gf}}</td>
+                        <td class="desk">{{this.gc}}</td>
+                        <td class="desk">{{this.dg}}</td>
+                        <td class="td_pts">{{this.pts}}</td>
+                    </tr>
+                {{else}}
+                    {{#if (IsDescent this.pos ../size ../title)}}
+                        <tr class="Descent">
+                            <td>{{this.pos}}</td>
+                            <td class="desk" ><img src="{{this.team_img}}" alt="{{this.team_name_short}}_logo" width="32" height="32"> </td>
+                            <td class="desk">{{this.team_name_large}}</td>
+                            <td class="mobil">{{this.team_name_short}}</td>
+                            <td>{{this.pj}}</td>
+                            <td>{{this.g}}</td>
+                            <td>{{this.e}}</td>
+                            <td>{{this.p}}</td>
+                            <td class="desk">{{this.gf}}</td>
+                            <td class="desk">{{this.gc}}</td>
+                            <td class="desk">{{this.dg}}</td>
+                            <td class="td_pts">{{this.pts}}</td>
+                        </tr>
+                    
+                    {{else}}
                 <tr>
-                    <td>{{pos}}</td>
-                    <td  class="desk" ><img src="{{team_img}}" alt="{{team_name_short}}_logo" width="32" height="32"> </td>
-                    <td class="desk">{{team_name_large}}</td>
-                    <td class="mobil">{{team_name_short}}</td>
-                    <td>{{pj}}</td>
-                    <td>{{g}}</td>
-                    <td>{{e}}</td>
-                    <td>{{p}}</td>
-                    <td class="desk">{{gf}}</td>
-                    <td class="desk">{{gc}}</td>
-                    <td class="desk">{{dg}}</td>
-                    <td class="td_pts">{{pts}}</td>
+                    <td>{{this.pos}}</td>
+                        <td class="desk" ><img src="{{this.team_img}}" alt="{{this.team_name_short}}_logo" width="32" height="32"> </td>
+                        <td class="desk">{{this.team_name_large}}</td>
+                        <td class="mobil">{{this.team_name_short}}</td>
+                        <td>{{this.pj}}</td>
+                        <td>{{this.g}}</td>
+                        <td>{{this.e}}</td>
+                        <td>{{this.p}}</td>
+                        <td class="desk">{{this.gf}}</td>
+                        <td class="desk">{{this.gc}}</td>
+                        <td class="desk">{{this.dg}}</td>
+                        <td class="td_pts">{{this.pts}}</td>
                 </tr>
+                    {{/if}}
+                
+            
+                {{/if}}
+                
+                
                 {{/each}}
 
             </tbody>
@@ -57,7 +131,21 @@
         {{/if}}
        
     </div>
-
+    <div class="info">
+        <ul>
+            <li>J: Número de partidos jugados.  </li>
+            <li>G: El número de partidos ganados.  </li>
+            <li>E: Empate.  </li>
+            <li>P: Derrotas.  </li>
+            <li>GF: Goles a favor.  </li>
+            <li>GC: Goles en contra.  </li>
+            <li>DG: Diferencia de goles.  </li>
+            <li>PTS: Puntos.</li>
+        </ul>
+    </div>
+    <footer>
+        <p>&copy; 2022 - <a href="http://erikschwerdt.ml/"style="Color:white" target="_blank">Erik Lionel Schwerdt</a> - <a href="https://github.com/xErik444x/Scrap-con-NodeJS---Tabla-Primera-Liga/tree/minified_version" style="Color:white" target="_blank">GitHub</a></p>
+    </footer>
 </body>
 
 </html>

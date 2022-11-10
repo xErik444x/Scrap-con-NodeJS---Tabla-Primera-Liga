@@ -2,6 +2,51 @@ html {
     background-color: #202324;
     color: #e0ccaa;
 }
+/* HEADER  */
+
+.header {
+    overflow: hidden;
+    background-color: #303233;
+    padding: 10px 10px;
+    width: 80%;
+    margin:auto;
+  }
+  .header a {
+    float: left;
+    color: #e8e6e3;
+    text-align: center;
+    padding: 12px;
+    text-decoration: none;
+    font-size: 18px; 
+    line-height: 25px;
+    border-radius: 0px;
+  }
+  
+  .logo {
+      font-size: 20px;
+    color:white;
+    display:contents;
+    font-size: 25px;
+    font-weight: bold;
+  }
+  
+  .header a:hover {
+    background-color: rgb(206, 206, 206);
+    color: rgb(39, 24, 24);
+    
+  }
+  
+  .header a.active {
+    background-color: rgb(255, 255, 255);
+    color: rgb(24, 24, 24);
+  }
+  
+  .header-right {
+    float: right;
+  }
+  
+/* END HEADER */
+
 
 .container {
     width: 100%;
@@ -10,7 +55,7 @@ html {
     justify-content: center;
 }
 
-h1,
+h2,
 p {
     text-align: center;
 }
@@ -29,17 +74,17 @@ th,
 td {
     text-align: left;
     vertical-align: center;
-    padding: 2px;
+    padding: 5px;
     font-size: 18px;
 
 }
 
-tbody tr:nth-child(-n+4) {
+.Ascent{
     background-color: #278a6c;
     color: white
 }
 
-tbody tr:nth-last-child(-n+4) {
+.Descent{
     background-color: rgb(175, 49, 49);
     color: white
 }
@@ -48,13 +93,29 @@ tbody tr:nth-last-child(-n+4) {
     display: none;
 }
 
+.info {
+    width: 70%;
+    height: 100%;
+    display: flex;
+    margin:auto;
+    justify-content: center;
+}
+.info ul{
+    text-align:center;
+}
+
+.info li{
+    font-size: 16px;
+   /* display: inline;*/
+}
+
 
 /* responsive */
 @media (max-width: 768px) {
 
     th,
     td {
-        font-size: 20px;
+        font-size: 18px;
 
     }
 
@@ -69,5 +130,14 @@ tbody tr:nth-last-child(-n+4) {
     .mobil {
         display: block;
     }
+    .header a {
+        float: none;
+        display: block;
+        text-align: left;
+      }
+      
+      .header-right {
+        float: none;
+      }
 
 }
