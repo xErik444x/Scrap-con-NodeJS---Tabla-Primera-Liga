@@ -2,16 +2,12 @@
    "version": 2,
    "builds": [{
     "src": "app.js",
-    "use": "@now/node-server",
-    "config": { "maxLambdaSize": "50mb" }
+    "use": "@vercel/node"
   },{
     "src": "./public/*/**",
     "use": "@now/static"
   }],
   "routes": [{
-    "src": "/dev/(css|js)/(.*)",
-    "dest": "/public/($1)/($2)"
-  },{
     "src": "/",
     "dest": "app.js"
   }]
