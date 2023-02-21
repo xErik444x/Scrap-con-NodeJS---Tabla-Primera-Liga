@@ -1,5 +1,13 @@
 {
    "version": 2,
-   "rewrites": [{ "source": "/posiciones", "destination": "/posiciones" }
+   "builds": [
+    {
+      "use": "@now/static"
+    }],
+    "routes": [
+        {
+          "src": "/posiciones",
+          "dest": "/posiciones"
+        }
    ]
 }
