@@ -1,3 +1,4 @@
+require('dotenv').config()
 //Imports
 const express = require("express");
 const mongoose = require("mongoose");
@@ -85,7 +86,7 @@ mongoose.connect(url, { useNewUrlParser: true, useUnifiedTopology: true })
 
 //App 
 const app = express()
-const port = process.env.PORT
+const port = process.env.PORT || 3000
 
 if(!port){ throw new Error("No PORT ENV VARIABLE defined");}
 
