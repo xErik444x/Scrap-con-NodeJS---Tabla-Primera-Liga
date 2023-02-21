@@ -6,7 +6,7 @@
     }],
     "routes": [
         {
-          "src": "/posiciones",
+          "src": "/",
           "dest": "/"
         }
    ]

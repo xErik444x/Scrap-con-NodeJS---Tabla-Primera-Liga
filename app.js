@@ -126,7 +126,7 @@ app.set("views", __dirname + "/views");
 
 app.use(express.static('public'))
 
-app.get('/posiciones', async (req, res) => {
+app.get('/', async (req, res) => {
   try {
     //?id
     const id = req.query.id;
