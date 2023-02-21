@@ -1,9 +1,5 @@
 {
    "version": 2,
-   "routes": [
-    {
-        "src": "/posiciones",
-        "dest": "app.js"
-    }
+   "rewrites": [{ "source": "/posiciones", "destination": "/posiciones" }
    ]
 }
